@@ -12,7 +12,8 @@
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">Login</h2>
-            <form method="POST" action="{{ route('auth.login')}}">
+            <form method="POST" action="{{ route('auth.login') }}">
+                @csrf
                 <!-- Email Input -->
                 <div class="mb-6">
                     <label for="email"

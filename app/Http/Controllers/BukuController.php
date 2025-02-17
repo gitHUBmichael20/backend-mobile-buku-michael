@@ -14,10 +14,9 @@ class BukuController extends Controller
     protected $id_buku, $judul_buku, $penulis, $tahun_terbit;
     public function index(Request $request)
     {
-        $judul_buku = BukuModel::all();
-        return view('pages.index', ['buku' => $judul_buku]);
+        $buku = BukuModel::all();
+        return view('pages.index', compact('buku'));
     }
-
     /**
      * Store a newly created resource in storage.
      */

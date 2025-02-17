@@ -5,38 +5,38 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     //
+
+    public function showLogin()
+    {
+        // Jika pengguna sudah login, arahkan ke index
+        if (session('token')) {
+            return redirect()->route('pages.index');
+        }
+
+        return view('login'); // Tampilkan halaman login
+    }
+
     public function login(Request $request)
     {
-        $userpassword = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
         try {
-            if (!$token = JWTAuth::attempt($userpassword)) {
-                return response()->json(
-                    [
-                        'status' => false,
-                        'error' => 'Unauthorized',
-                        'message' => 'Login failed! Please try again'
-                    ],
-                    401
-                );
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'Unauthorized'], 401);
             }
 
-            $user = JWTAuth::user();
+            // Simpan token di session
+            session(['token' => $token]); // Pastikan ini berhasil
+            session()->save(); // Force save session (opsional)
 
-            // Store the token in the session
-            session(['token' => $token]);
-
-            return redirect()->route('buku.index')->with([
-                'status' => true,
-                'message' => 'Login successful',
-                'user' => $user,
-            ]);
+            return redirect()->route('buku.index');
         } catch (JWTException $e) {
-            return response()->json(['status' => false, 'message' => 'Could not create token'], 500);
+            return response()->json(['error' => 'Could not create token'], 500);
         }
     }
 }

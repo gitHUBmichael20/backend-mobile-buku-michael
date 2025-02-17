@@ -26,16 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($buku as $index => $b)
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
-                                <td class="px-6 py-4">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    {{ $b->judul }}</td>
-                                <td class="px-6 py-4">{{ $b->penulis }}</td>
-                                <td class="px-6 py-4">{{ $b->tahun_terbit }}</td>
-                            </tr>
-                        @endforeach
+                        
                     </tbody>
                 </table>
             </div>

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
 
 class JwtMiddleware
 {
@@ -17,22 +18,19 @@ class JwtMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            // Retrieve token from session
             $token = session('token');
             if (!$token) {
                 throw new \Exception('Token not found in session');
             }
 
-            // Authenticate using the token
+            // Validasi token
             $user = JWTAuth::setToken($token)->authenticate();
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token invalid: ' . $e->getMessage()
-            ], 401);
-        }
 
-        return redirect()->route('manage')
-            ->header('Authorization', 'Bearer ' . $token);
+            // Lanjutkan ke controller jika token valid
+            return $next($request);
+        } catch (\Exception $e) {
+            // Redirect ke halaman login jika token tidak valid
+            return redirect()->route('auth.login.page'); // Ganti dengan route login Anda
+        }
     }
 }
