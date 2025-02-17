@@ -14,18 +14,8 @@ class BukuController extends Controller
     protected $id_buku, $judul_buku, $penulis, $tahun_terbit;
     public function index(Request $request)
     {
-
-        //
-        // if($request->ajax()):
-        $this->judul_buku  = BukuModel::all();
-        return response()->json(
-            [
-                'buku' => $this->judul_buku
-            ],
-            200
-        );
-        // endif;
-        // echo "API BUKU KU";
+        $judul_buku = BukuModel::all();
+        return view('pages.index', ['buku' => $judul_buku]);
     }
 
     /**
@@ -91,13 +81,13 @@ class BukuController extends Controller
                 'status' => true,
                 'message' => 'Data Buku Behasil Diubah',
                 'data' => $buku
-            ], 200 );
+            ], 200);
         } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Data Buku Gagal Diubah',
                 'data' => $buku
-            ], 400 );
+            ], 400);
         }
     }
 
@@ -106,35 +96,35 @@ class BukuController extends Controller
      */
     public function update(Request $request, int $id_buku)
     {
-        if (empty($request->judul_buku) || empty($request->penulis) || empty($request->tahun_terbit)):  
-            $pesan = [
-            'status' => false,
-            'message' => 'data tidak boleh ada yang kosong'
-        ];
-        $status = 403;
-    else:
-        $data = [
-            'judul_buku' => $request->judul_buku,
-            'penulis' => $request->penulis,
-            'tahun_terbit' => $request->tahun_terbit
-        ];
-        $update = BukuModel::where('id_buku', '=', $id_buku)->update($data);
-        if ($update):
-            $pesan = [
-                'status' => true,
-                'message' => 'data buku berhasil diubah'
-            ];
-            $status = 200;
-        else:
+        if (empty($request->judul_buku) || empty($request->penulis) || empty($request->tahun_terbit)):
             $pesan = [
                 'status' => false,
-                'message' => 'data buku gagal diubah'
+                'message' => 'data tidak boleh ada yang kosong'
             ];
-            $status = 400;
+            $status = 403;
+        else:
+            $data = [
+                'judul_buku' => $request->judul_buku,
+                'penulis' => $request->penulis,
+                'tahun_terbit' => $request->tahun_terbit
+            ];
+            $update = BukuModel::where('id_buku', '=', $id_buku)->update($data);
+            if ($update):
+                $pesan = [
+                    'status' => true,
+                    'message' => 'data buku berhasil diubah'
+                ];
+                $status = 200;
+            else:
+                $pesan = [
+                    'status' => false,
+                    'message' => 'data buku gagal diubah'
+                ];
+                $status = 400;
+            endif;
         endif;
-    endif;
-    return response()
-        ->json($pesan, $status);
+        return response()
+            ->json($pesan, $status);
     }
 
     /**
