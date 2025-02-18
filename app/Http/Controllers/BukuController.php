@@ -11,12 +11,13 @@ class BukuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $id_buku, $judul_buku, $penulis, $tahun_terbit;
+    protected $id_buku, $judul_buku, $deskripsi_buku, $penulis, $tahun_terbit;
     public function index(Request $request)
     {
         $buku = BukuModel::all();
-        return view('pages.index', compact('buku'));
+        return view('index', ['buku' => $buku]);
     }
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -35,6 +36,7 @@ class BukuController extends Controller
         else:
             $data = [
                 'judul_buku' => $request->judul_buku,
+                'deskripsi_buku' => $request->deskripsi_buku,
                 'penulis' => $request->penulis,
                 'tahun_terbit' => $request->tahun_terbit
             ];
@@ -71,6 +73,7 @@ class BukuController extends Controller
 
         $buku->judul_buku = $request->input('judul_buku', $buku->judul_buku);
         $buku->penulis = $request->input('penulis', $buku->penulis);
+        $buku->deskripsi_buku = $request->input('deskripsi_buku', $buku->deskripsi_buku);
         $buku->tahun_terbit = $request->input('tahun_terbit', $buku->tahun_terbit);
 
         $berhasil = $buku->save();
@@ -105,6 +108,7 @@ class BukuController extends Controller
             $data = [
                 'judul_buku' => $request->judul_buku,
                 'penulis' => $request->penulis,
+                'deskripsi_buku' => $request->deskripsi_buku,
                 'tahun_terbit' => $request->tahun_terbit
             ];
             $update = BukuModel::where('id_buku', '=', $id_buku)->update($data);

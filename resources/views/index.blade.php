@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambahkan Buku</title>
+    <title>Daftar Buku</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -22,11 +22,21 @@
                             <th scope="col" class="px-6 py-3">No</th>
                             <th scope="col" class="px-6 py-3">Judul Buku</th>
                             <th scope="col" class="px-6 py-3">Penulis</th>
+                            <th scope="col" class="px-6 py-3">Deskripsi</th>
                             <th scope="col" class="px-6 py-3">Tahun Terbit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        @foreach ($buku as $item)
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-4">{{ $item->id_buku }}</td>
+                                <td class="px-6 py-4">{{ $item->judul_buku }}</td>
+                                <td class="px-6 py-4">{{ $item->penulis }}</td>
+                                <td class="px-6 py-4">{{ $item->deskripsi_buku }}</td>
+                                <td class="px-6 py-4">{{ $item->tahun_terbit }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         // Jika pengguna sudah login, arahkan ke index
         if (session('token')) {
-            return redirect()->route('pages.index');
+            return redirect()->route('index');
         }
 
         return view('login'); // Tampilkan halaman login

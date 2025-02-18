@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create($this->table, function(Blueprint $struktur) {
             $struktur->integer('id_buku',true,true);
             $struktur->string('judul_buku',255)->nullable(false);
+            $struktur->string('deskripsi_buku',255)->nullable(false);
             $struktur->string('penulis',200)->nullable(false);
             $struktur->integer('tahun_terbit')->nullable(false);
         });
