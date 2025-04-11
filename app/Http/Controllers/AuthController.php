@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         // Jika pengguna sudah login, arahkan ke index
         if (session('token')) {
-            return redirect()->route('index');
+            return redirect()->route('buku.index');
         }
 
         return view('login'); // Tampilkan halaman login
@@ -38,5 +38,15 @@ class AuthController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
+    }
+
+    public function logout()
+    {
+        // Clear the session
+        session()->forget('token');
+        session()->flush();
+
+        // Redirect to login page
+        return redirect()->route('auth.login.page')->with('success', 'Logged out!');
     }
 }

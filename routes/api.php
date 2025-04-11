@@ -16,9 +16,4 @@ Route::prefix('/buku')->middleware([JwtMiddleware::class])->group(function () {
     Route::post('/simpan', [BukuController::class, 'store'])->name('buku.store');
     Route::put('/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
     Route::patch('/patch/{id_buku}', [BukuController::class, 'show'])->name('buku.patch');
-    Route::delete('/delete/{id_buku}', [BukuController::class, 'destroy'])->name('buku.delete');
-});
-
-Route::prefix('/auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });

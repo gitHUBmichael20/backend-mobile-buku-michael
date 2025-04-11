@@ -16,17 +16,21 @@ Route::get('/', function () {
     return redirect()->route('auth.login.page');
 })->name('home');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login.page');
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::prefix('/auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/login-page', [AuthController::class, 'showLogin'])->name('auth.login.page');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+});
 
 
 Route::middleware([JwtMiddleware::class])->group(function () {
     // Halaman index (menggunakan BukuController)
+    Route::get('/form-tambah-buku', function () {
+        return view('form-tambah-buku');
+    })->name('buku.create.file');
+    Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
     Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
-    
-    // Tambahkan rute lain yang memerlukan otentikasi di sini
-    Route::post('/buku/simpan', [BukuController::class, 'store'])->name('buku.store');
-    Route::put('/buku/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
-    Route::patch('/buku/patch/{id_buku}', [BukuController::class, 'show'])->name('buku.patch');
-    Route::delete('/buku/delete/{id_buku}', [BukuController::class, 'destroy'])->name('buku.delete');
+    Route::get('/buku/baca/{id_buku}', [BukuController::class, 'bacaBuku'])->name('buku.baca');
+    Route::delete('/buku/{id_buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    Route::put('buku/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
 });

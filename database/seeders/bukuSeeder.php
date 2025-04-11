@@ -22,7 +22,7 @@ class bukuSeeder extends Seeder
             BukuModel::create([
                 'judul_buku' => $faker->sentence(rand(3, 6)), // Random title with 3-6 words
                 'penulis' => $faker->name(), // Random author name
-                'deskripsi_buku' => $faker->sentence(rand(6, 9)), // Random description
+                'deskripsi_buku' => $faker->paragraph(rand(6, 9)), // Random description
                 'tahun_terbit' => $faker->numberBetween(1980, 2024), // Random year between 1980-2024
             ]);
         }
