@@ -16,7 +16,7 @@ class BukuController extends Controller
     public function index(Request $request)
     {
         $buku = BukuModel::all();
-        return view('index', ['buku' => $buku]);
+        return response()->json($buku);
     }
 
     /**

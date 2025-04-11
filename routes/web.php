@@ -23,14 +23,15 @@ Route::prefix('/auth')->group(function () {
 });
 
 
-Route::middleware([JwtMiddleware::class])->group(function () {
-    // Halaman index (menggunakan BukuController)
-    Route::get('/form-tambah-buku', function () {
-        return view('form-tambah-buku');
-    })->name('buku.create.file');
-    Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-    Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
-    Route::get('/buku/baca/{id_buku}', [BukuController::class, 'bacaBuku'])->name('buku.baca');
-    Route::delete('/buku/{id_buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
-    Route::put('buku/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
-});
+// Route::middleware([JwtMiddleware::class])->group(function () {
+//     Route::get('/form-tambah-buku', function () {
+//         return view('form-tambah-buku');
+//     })->name('buku.create.file');
+//     Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
+//     Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
+//     Route::get('/buku/baca/{id_buku}', [BukuController::class, 'bacaBuku'])->name('buku.baca');
+//     Route::delete('/buku/{id_buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
+//     Route::put('buku/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
+// });
+
+Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
