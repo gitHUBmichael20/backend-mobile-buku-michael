@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BukuModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class BukuController extends Controller
@@ -12,7 +13,7 @@ class BukuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $id_buku, $judul_buku, $deskripsi_buku, $penulis, $tahun_terbit;
+    protected $id_buku, $judul_buku, $deskripsi_buku, $penulis, $tahun_terbit, $sampul_buku;
     public function index(Request $request)
     {
         $buku = BukuModel::all();
@@ -22,29 +23,33 @@ class BukuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+
+    public function store(Request $request)
     {
-        // Validate required fields
+        // Validasi input
         if (empty($request->judul_buku) || empty($request->penulis) || empty($request->tahun_terbit)) {
-            return redirect()->route('buku.index')->with('error', 'Data tidak boleh ada yang kosong');
+            return response()->json(['error' => 'Data tidak boleh kosong'], 400);
         }
 
-        // Prepare data
+        // Data yang disiapkan
         $data = [
             'judul_buku' => $request->judul_buku,
             'penulis' => $request->penulis,
             'deskripsi_buku' => $request->deskripsi_buku,
-            'tahun_terbit' => $request->tahun_terbit
+            'tahun_terbit' => $request->tahun_terbit,
+            'sampul_buku' => $request->sampul_buku
         ];
 
-        // Create book
+        // Simpan data
         try {
             BukuModel::create($data);
-            return redirect()->route('buku.index')->with('success', 'Data buku tersimpan');
+            return response()->json(['success' => 'Data buku berhasil disimpan'], 201);
         } catch (\Exception $e) {
-            return redirect()->route('buku.index')->with('error', 'Data buku gagal tersimpan');
+            error_log($e->getMessage()); // Ganti Log::error() ke sini
+            return response()->json(['error' => 'Gagal menyimpan data buku'], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -62,6 +67,7 @@ class BukuController extends Controller
         $buku->penulis = $request->input('penulis', $buku->penulis);
         $buku->deskripsi_buku = $request->input('deskripsi_buku', $buku->deskripsi_buku);
         $buku->tahun_terbit = $request->input('tahun_terbit', $buku->tahun_terbit);
+        $buku->sampul_buku = $request->input('sampul_buku', $buku->sampul_buku);
 
         $berhasil = $buku->save();
 
@@ -102,7 +108,8 @@ class BukuController extends Controller
             'judul_buku' => $request->judul_buku,
             'penulis' => $request->penulis,
             'deskripsi_buku' => $request->deskripsi_buku,
-            'tahun_terbit' => $request->tahun_terbit
+            'tahun_terbit' => $request->tahun_terbit,
+            'sampul_buku' => $request->sampul_buku
         ];
 
         // Perform update

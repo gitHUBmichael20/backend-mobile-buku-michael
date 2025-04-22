@@ -13,7 +13,10 @@ Route::get('/user', function (Request $request) {
 
 // Route::prefix('/buku')->middleware([JwtMiddleware::class])->group(function () {
 //     Route::get('/', [BukuController::class, 'index'])->name('buku.index');
-//     Route::post('/simpan', [BukuController::class, 'store'])->name('buku.store');
 //     Route::put('/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
 //     Route::patch('/patch/{id_buku}', [BukuController::class, 'show'])->name('buku.patch');
 // });
+
+Route::post('/simpan', [BukuController::class, 'store'])->name('buku.store');
+
+

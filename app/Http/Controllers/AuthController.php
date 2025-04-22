@@ -27,16 +27,24 @@ class AuthController extends Controller
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->json(['message' => 'wrong password'], 401);
             }
 
-            // Simpan token di session
-            session(['token' => $token]); // Pastikan ini berhasil
-            session()->save(); // Force save session (opsional)
+            // Save the token in the session
+            session(['token' => $token]);
+            session()->save();
 
-            return redirect()->route('buku.index');
+            // Get the authenticated user
+            $user = JWTAuth::user();
+
+            // Return the token to the client as well
+            return response()->json([
+                'message' => 'success',
+                'token' => $token,
+                'user' => $user
+            ]);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+            return response()->json(['message' => 'failed to create token'], 500);
         }
     }
 

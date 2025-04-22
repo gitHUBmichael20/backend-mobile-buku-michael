@@ -19,6 +19,7 @@ return new class extends Migration
             $struktur->string('deskripsi_buku',255)->nullable(false);
             $struktur->string('penulis',200)->nullable(false);
             $struktur->integer('tahun_terbit')->nullable(false);
+            $struktur->string('sampul_buku')->nullable(false);
         });
     }
 

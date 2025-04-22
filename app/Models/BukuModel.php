@@ -14,7 +14,8 @@ class BukuModel extends Model
         'judul_buku',
         'deskripsi_buku',
         'penulis',
-        'tahun_terbit'
+        'tahun_terbit',
+        'sampul_buku'
     ];  
     public $timestamps = false;
 }

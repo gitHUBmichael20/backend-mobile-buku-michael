@@ -15,15 +15,15 @@ class bukuSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create('id_ID'); // Using Indonesian locale for more appropriate book titles
-        
-        // Generate 20 fake book entries
-        for ($i = 0; $i < 20; $i++) {
+        $faker = Faker::create('id_ID'); // Lokal Indonesia
+
+        for ($i = 0; $i < 50; $i++) {
             BukuModel::create([
-                'judul_buku' => $faker->sentence(rand(3, 6)), // Random title with 3-6 words
-                'penulis' => $faker->name(), // Random author name
-                'deskripsi_buku' => $faker->paragraph(rand(6, 9)), // Random description
-                'tahun_terbit' => $faker->numberBetween(1980, 2024), // Random year between 1980-2024
+                'judul_buku' => $faker->sentence(rand(3, 6)),
+                'penulis' => $faker->name(),
+                'deskripsi_buku' => $faker->paragraph(rand(6, 9)),
+                'tahun_terbit' => $faker->numberBetween(1980, 2024),
+                'sampul_buku' => 'https://picsum.photos/1080/1920?random=' . $i, // Gambar dari Lorem Picsum
             ]);
         }
     }
