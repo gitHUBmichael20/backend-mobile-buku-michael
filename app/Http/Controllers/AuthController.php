@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -25,27 +23,16 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['message' => 'wrong password'], 401);
-            }
-
-            // Save the token in the session
-            session(['token' => $token]);
-            session()->save();
-
-            // Get the authenticated user
-            $user = JWTAuth::user();
-
-            // Return the token to the client as well
+        if (Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'success',
-                'token' => $token,
-                'user' => $user
-            ]);
-        } catch (JWTException $e) {
-            return response()->json(['message' => 'failed to create token'], 500);
+                'message' => 'Login successful',
+                'user' => Auth::user()
+            ], 200);
         }
+
+        return response()->json([
+            'message' => 'Invalid email or password'
+        ], 401);
     }
 
     public function logout()

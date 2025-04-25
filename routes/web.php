@@ -16,11 +16,6 @@ Route::get('/', function () {
     return redirect()->route('auth.login.page');
 })->name('home');
 
-Route::prefix('/auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-    Route::get('/login-page', [AuthController::class, 'showLogin'])->name('auth.login.page');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-});
 
 
 // Route::middleware([JwtMiddleware::class])->group(function () {
@@ -34,4 +29,4 @@ Route::prefix('/auth')->group(function () {
 // });
 
 // Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
+// Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
