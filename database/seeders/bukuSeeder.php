@@ -21,7 +21,8 @@ class bukuSeeder extends Seeder
             BukuModel::create([
                 'judul_buku' => $faker->sentence(rand(3, 6)),
                 'penulis' => $faker->name(),
-                'deskripsi_buku' => $faker->paragraph(rand(6, 9)),
+                // 'deskripsi_buku' => $faker->paragraph(rand(6, 9)),
+                'deskripsi_buku' => $faker->realText(maxNbChars: 255),
                 'tahun_terbit' => $faker->numberBetween(1980, 2024),
                 'sampul_buku' => 'https://picsum.photos/1080/1920?random=' . $i, // Gambar dari Lorem Picsum
             ]);

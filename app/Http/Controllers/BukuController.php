@@ -89,18 +89,24 @@ class BukuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id_buku): RedirectResponse
+    public function update(Request $request, int $id_buku)
     {
         // Check if book exists
         $buku = BukuModel::where('id_buku', $id_buku)->first();
 
         if (!$buku) {
-            return redirect()->back()->with('error', 'Buku tidak ditemukan');
+            return response()->json([
+                'success' => false,
+                'message' => 'Buku tidak ditemukan'
+            ], 404);
         }
 
         // Validate required fields
         if (empty($request->judul_buku) || empty($request->penulis) || empty($request->tahun_terbit)) {
-            return redirect()->back()->with('error', 'Data tidak boleh ada yang kosong');
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak boleh ada yang kosong'
+            ], 422);
         }
 
         // Prepare data for update
@@ -116,10 +122,17 @@ class BukuController extends Controller
         $update = BukuModel::where('id_buku', $id_buku)->update($data);
 
         if ($update) {
-            return redirect()->route('buku.index')->with('success', 'Data buku berhasil diubah');
+            return response()->json([
+                'success' => true,
+                'message' => 'Data buku berhasil diubah',
+                'data' => BukuModel::find($id_buku)
+            ], 200);
         }
 
-        return redirect()->back()->with('error', 'Data buku gagal diubah');
+        return response()->json([
+            'success' => false,
+            'message' => 'Data buku gagal diubah'
+        ], 500);
     }
 
     public function bacaBuku(int $id_buku)
@@ -138,11 +151,27 @@ class BukuController extends Controller
         $buku = BukuModel::where('id_buku', $id_buku)->first();
 
         if (!$buku) {
-            return redirect()->back()->with('error', 'Buku tidak ditemukan');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Buku tidak ditemukan',
+                'details' => [
+                    'id_buku' => $id_buku,
+                    'error' => 'No book found with the provided ID',
+                    'timestamp' => now()->toDateTimeString(),
+                ]
+            ], 404);
         }
 
         $buku->delete();
 
-        return redirect()->route('buku.index')->with('success', 'Buku berhasil dihapus');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Buku berhasil dihapus',
+            'details' => [
+                'id_buku' => $id_buku,
+                'title' => $buku->judul, // Assuming 'judul' is the book title field
+                'timestamp' => now()->toDateTimeString(),
+            ]
+        ], 200);
     }
 }

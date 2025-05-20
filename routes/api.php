@@ -14,10 +14,11 @@ Route::get('/user', function (Request $request) {
 Route::prefix('/buku')->group(function () {
     Route::get('/index', [BukuController::class, 'index'])->name('buku.index');
     Route::put('/update/{id_buku}', [BukuController::class, 'update'])->name('buku.rest.update');
+    Route::post('/simpan', [BukuController::class, 'store'])->name('buku.store');
     Route::patch('/patch/{id_buku}', [BukuController::class, 'show'])->name('buku.patch');
+    Route::delete('/delete/{id_buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
 });
 
-Route::post('/simpan', [BukuController::class, 'store'])->name('buku.store');
 
 Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
